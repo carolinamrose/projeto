@@ -43,13 +43,17 @@ const AddSection = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            const newSections = [...sections, inputValue];
-            setSections(newSections);
-            localStorage.setItem(pathname, JSON.stringify(newSections)); // Salva no localStorage após atualizar as seções
+            setSections(prevSections => {
+                const newSections = [...prevSections, inputValue];
+                localStorage.setItem(pathname, JSON.stringify(newSections));
+                return newSections;
+            });
             setInputValue("");
-            setFormVisible(false); // Fechar o formulário após submissão
+            setFormVisible(false);
         }
     };
+
+    const showFormBottom = !sections.length;
 
     return (
         <div className={Styles.section__container}>
@@ -61,28 +65,28 @@ const AddSection = () => {
                         value={inputValue} 
                         onChange={handleInputChange} 
                     />
-                    <div className={Styles.section__formbottom}>
-                        <button type="submit">Adicionar</button>
-                        <span type="button" onClick={handleCancelClick}>Cancelar</span>
-                    </div>
+                    {showFormBottom && (
+                        <div className={Styles.section__formbottom}>
+                            <button type="submit">Adicionar</button>
+                            <span type="button" onClick={handleCancelClick}>Cancelar</span>
+                        </div>
+                    )}
                 </form>
             ) : (
-                <>
+                sections.length === 0 && (
                     <div className={Styles.section__item} onClick={handleAddSectionClick}>
                         <Image src={Frame} alt="Frame Icon" />
                         <span type="button">Adicionar seção</span>
                     </div>
-                    {sections.length === 0 && (
-                        <div className={Styles.section__create}>
-                            <Image src={CurvyArrow2} alt="Seta Curva" />
-                            <span>Crie sua Primeira Sessão aqui</span>
-                        </div>
-                    )}
-                </>
+                )
             )}
-
-        <SectionList sections={sections} setSections={setSections} />
-
+            {sections.length === 0 && (
+                <div className={Styles.section__create}>
+                    <Image src={CurvyArrow2} alt="Seta Curva" />
+                    <span>Crie sua Primeira Sessão aqui</span>
+                </div>
+            )}
+            <SectionList sections={sections} />
         </div>
     );
 };
