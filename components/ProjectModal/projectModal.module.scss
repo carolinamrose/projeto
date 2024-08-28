@@ -1,0 +1,27 @@
+.modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #E9ECEF;
+
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--grey-1);
+}
+
+.modal__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal__closebutton {
+    color: var(--grey-1);
+    font-size: 18px;
+    background: none;
+    border: none;
+    text-align: right;
+    cursor: pointer;
+}
