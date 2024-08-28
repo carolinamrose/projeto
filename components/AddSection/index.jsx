@@ -13,7 +13,6 @@ const AddSection = () => {
     const router = useRouter();
     const { pathname } = router;
 
-    // Load sections from localStorage on component mount
     useEffect(() => {
         const savedSections = JSON.parse(localStorage.getItem(pathname)) || [];
         setSections(savedSections);
@@ -44,9 +43,10 @@ const AddSection = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            setSections([...sections, inputValue]);  // Add the new section
-            setInputValue("");  // Reset the input
-            setFormVisible(false);  // Hide the form after submission
+            const newSections = [...sections, inputValue];  // Adiciona a nova seção
+            setSections(newSections);  // Atualiza o estado das seções
+            setInputValue("");  // Reseta o valor do input
+            setFormVisible(false);  // Esconde o formulário após a submissão
         }
     };
 
@@ -74,12 +74,13 @@ const AddSection = () => {
                     {sections.length === 0 && (
                         <div className={Styles.section__create}>
                             <Image src={CurvyArrow2} alt="Seta Curva" />
-                            <span>Crie sua Primeira Sessão aqui</span>
+                            <span>Crie sua Primeira Seção aqui</span>
                         </div>
                     )}
                 </>
             )}
 
+            {/* O SectionList recebe as seções e renderiza-as imediatamente */}
             <SectionList sections={sections} />
         </div>
     );
