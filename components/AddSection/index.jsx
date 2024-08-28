@@ -43,16 +43,31 @@ const AddSection = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            const newSections = [...sections, inputValue];  // Adiciona a nova seção
-            setSections(newSections);  // Atualiza o estado das seções
-            setInputValue("");  // Reseta o valor do input
-            setFormVisible(false);  // Esconde o formulário após a submissão
+            const newSections = [...sections, inputValue];
+            setSections(newSections);
+            setInputValue("");
+            setFormVisible(false);
         }
     };
 
     return (
         <div className={Styles.section__container}>
-            {isFormVisible ? (
+            {/* O botão "Adicionar Seção" está sempre visível, independentemente do estado do formulário */}
+            <div className={Styles.section__item} onClick={handleAddSectionClick}>
+                <Image src={Frame} alt="Frame Icon" />
+                <span>Adicionar seção</span>
+            </div>
+
+            {/* Exibe uma mensagem caso não haja seções */}
+            {sections.length === 0 && (
+                <div className={Styles.section__create}>
+                    <Image src={CurvyArrow2} alt="Seta Curva" />
+                    <span>Crie sua Primeira Seção aqui</span>
+                </div>
+            )}
+
+            {/* Renderiza o formulário somente quando `isFormVisible` é verdadeiro */}
+            {isFormVisible && (
                 <form className={Styles.section__form} onSubmit={handleFormSubmit}>
                     <input 
                         type="text" 
@@ -65,22 +80,9 @@ const AddSection = () => {
                         <span onClick={handleCancelClick}>Cancelar</span>
                     </div>
                 </form>
-            ) : (
-                <>
-                    <div className={Styles.section__item} onClick={handleAddSectionClick}>
-                        <Image src={Frame} alt="Frame Icon" />
-                        <span>Adicionar seção</span>
-                    </div>
-                    {sections.length === 0 && (
-                        <div className={Styles.section__create}>
-                            <Image src={CurvyArrow2} alt="Seta Curva" />
-                            <span>Crie sua Primeira Seção aqui</span>
-                        </div>
-                    )}
-                </>
             )}
 
-            {/* O SectionList recebe as seções e renderiza-as imediatamente */}
+            {/* O SectionList recebe as seções e renderiza-as */}
             <SectionList sections={sections} />
         </div>
     );
