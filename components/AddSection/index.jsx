@@ -10,10 +10,10 @@ const AddSection = () => {
     const [isFormVisible, setFormVisible] = useState(false);
     const [sections, setSections] = useState([]);
     const [inputValue, setInputValue] = useState("");
-    const [isSubmitted, setIsSubmitted] = useState(false);
     const router = useRouter();
     const { pathname } = router;
 
+    // Load sections from localStorage on component mount
     useEffect(() => {
         const savedSections = JSON.parse(localStorage.getItem(pathname)) || [];
         setSections(savedSections);
@@ -44,15 +44,15 @@ const AddSection = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            setSections([...sections, inputValue]);
-            setInputValue("");
-            setIsSubmitted(true);
+            setSections([...sections, inputValue]);  // Add the new section
+            setInputValue("");  // Reset the input
+            setFormVisible(false);  // Hide the form after submission
         }
     };
 
     return (
         <div className={Styles.section__container}>
-            {!isSubmitted && isFormVisible ? (
+            {isFormVisible ? (
                 <form className={Styles.section__form} onSubmit={handleFormSubmit}>
                     <input 
                         type="text" 
@@ -62,14 +62,14 @@ const AddSection = () => {
                     />
                     <div className={Styles.section__formbottom}>
                         <button type="submit">Adicionar</button>
-                        <span type="button" onClick={handleCancelClick}>Cancelar</span>
+                        <span onClick={handleCancelClick}>Cancelar</span>
                     </div>
                 </form>
-            ) : !isSubmitted && (
+            ) : (
                 <>
                     <div className={Styles.section__item} onClick={handleAddSectionClick}>
                         <Image src={Frame} alt="Frame Icon" />
-                        <span type="button">Adicionar seção</span>
+                        <span>Adicionar seção</span>
                     </div>
                     {sections.length === 0 && (
                         <div className={Styles.section__create}>
